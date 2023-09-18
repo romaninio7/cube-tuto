@@ -9,15 +9,16 @@ import {
   ResponsiveContainer,
   Legend,
   BarChart,
-  Bar
+  Bar,
 } from "recharts";
 import moment from "moment";
 import numeral from "numeral";
 import cubejs from "@cubejs-client/core";
-import Chart from "./Chart.js";
+import Chart from "./components/Chart.js";
+import DateRangeFilter from "./components/DateRangeFilter.js";
 
 const cubejsApi = cubejs(process.env.REACT_APP_CUBEJS_TOKEN, {
-  apiUrl: process.env.REACT_APP_API_URL
+  apiUrl: process.env.REACT_APP_API_URL,
 });
 const numberFormatter = (item) => numeral(item).format("0,0");
 const dateFormatter = (item) => moment(item).format("MMM YY");
@@ -30,6 +31,11 @@ class App extends Component {
   render() {
     return (
       <Container fluid>
+        <Row>
+          <Col>
+            <DateRangeFilter />
+          </Col>
+        </Row>
         <Row>
           <Col sm="4">
             <Chart
@@ -61,9 +67,9 @@ class App extends Component {
                   {
                     dimension: "Orders.status",
                     operator: "equals",
-                    values: ["shipped"]
-                  }
-                ]
+                    values: ["shipped"],
+                  },
+                ],
               }}
               render={(resultSet) =>
                 renderSingleValue(resultSet, "Orders.count")
@@ -84,9 +90,9 @@ class App extends Component {
                   {
                     dimension: "Users.createdAt",
                     dateRange: ["2019-01-01", "2020-12-31"],
-                    granularity: "month"
-                  }
-                ]
+                    granularity: "month",
+                  },
+                ],
               }}
               render={(resultSet) => (
                 <ResponsiveContainer width="100%" height={300}>
@@ -117,9 +123,9 @@ class App extends Component {
                   {
                     dimension: "Orders.createdAt",
                     dateRange: ["2019-01-01", "2020-12-31"],
-                    granularity: "month"
-                  }
-                ]
+                    granularity: "month",
+                  },
+                ],
               }}
               render={(resultSet) => {
                 return (
